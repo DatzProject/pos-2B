@@ -90,7 +90,17 @@ const GRADES = [
   "Sempurna! 🎉",
 ];
 
-function AccessPage({ onUnlock }) {
+type QuestionResult = {
+  id: number;
+  soal: string;
+  answer: number;
+  type: string;
+  satuan?: string;
+  userAnswer: number;
+  correct: boolean;
+};
+
+function AccessPage({ onUnlock }: { onUnlock: () => void }) {
   const [input, setInput] = useState("");
   const [shake, setShake] = useState(false);
   const [wrong, setWrong] = useState(false);
@@ -105,7 +115,7 @@ function AccessPage({ onUnlock }) {
     }
   };
 
-  const handleKey = (e) => {
+  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleSubmit();
   };
 
@@ -250,7 +260,7 @@ function AccessPage({ onUnlock }) {
 export default function MathQuiz2() {
   const [unlocked, setUnlocked] = useState(false);
   const [inputs, setInputs] = useState(Array(10).fill(""));
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<QuestionResult[] | null>(null);
 
   if (!unlocked) {
     return <AccessPage onUnlock={() => setUnlocked(true)} />;
@@ -258,7 +268,7 @@ export default function MathQuiz2() {
 
   const allFilled = inputs.every((v) => v.trim() !== "");
 
-  const handleChange = (i, val) => {
+  const handleChange = (i: number, val: string) => {
     if (result) return;
     setInputs((prev) => {
       const next = [...prev];
